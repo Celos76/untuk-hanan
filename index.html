@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animasi Cinta</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: pink;
+            font-family: Arial, sans-serif;
+        }
+        .heart {
+            font-size: 100px;
+            animation: heartbeat 1s infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .button {
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            display: block;
+        }
+        .hidden {
+            display: none;
+        }
+        #finishBtn {
+            display: none;
+            margin: 40px auto 0;
+            background-color: #4CAF50;
+        }
+        
+        /* Third page styles */
+        @keyframes rainbowBg {
+            0% {background-color: #ff0000;}
+            14% {background-color: #ff7f00;}
+            28% {background-color: #ffff00;}
+            42% {background-color: #00ff00;}
+            57% {background-color: #0000ff;}
+            71% {background-color: #4b0082;}
+            85% {background-color: #9400d3;}
+            100% {background-color: #ff0000;}
+        }
+        
+        @keyframes moveSmiley {
+            0% {transform: translateX(-100px); opacity: 0;}
+            20% {opacity: 1;}
+            80% {opacity: 1;}
+            100% {transform: translateX(calc(100vw + 100px)); opacity: 0;}
+        }
+        .text {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .author {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .flying-hearts {
+            position: fixed;
+            pointer-events: none;
+        }
+        
+        @keyframes fly {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" hidden>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <div id="firstPage">
+        <div class="heart">❤️</div>
+        <div style="text-align: center;">
+            <button class="button" onclick="openSecondPage()">BUKA</button>
+        </div>
+    </div>
+
+    <div id="secondPage" class="hidden">
+        <audio id="music" src="your-romantic-music.mp3" autoplay loop></audio>
+        <div class="text" id="text"></div>
+        <div class="author" id="author"></div>
+        <div style="text-align: center;">
+            <button id="finishBtn" class="button" onclick="openThirdPage()">SELESAI</button>
+        </div>
+    </div>
+
+    <div id="thirdPage" class="hidden">
+        <h1 style="font-size: 48px; margin-bottom: 30px;">TERIMA KASIH</h1>
+        <div id="smileyContainer"></div>
+    </div>
+
+    <script>
+        function openSecondPage() {
+            const music = document.getElementById('bgMusic');
+            music.volume = 0.5; // Set volume to 50%
+            music.play();
+            
+            document.getElementById('firstPage').classList.add('hidden');
+            document.getElementById('secondPage').classList.remove('hidden');
+            displayText();
+        }
+
+        function playMusic() {
+            const music = document.getElementById('music');
+            music.play();
+        }
+
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'flying-hearts';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animation = `fly ${Math.random() * 3 + 2}s linear forwards`;
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+
+        function displayText() {
+            createHearts();
+            const text = "Hallo Hanan!!. Aku tahu kita ini belum lama, belum ada status yang diresmikan, dan belum bisa selalu ketemu. Tapi setiap kali aku mikir tentang masa depan, entah kenapa yang kebayang tetap kamu. Mungkin kita cuma dua orang yang lagi sama-sama belajar menjaga hati dalam jarak, tapi aku percaya, rasa ini bukan main-main. Aku nggak butuh setiap hari ketemu kamu, asal kamu tetap jadi alasan aku buat semangat setiap harinya. Aku nggak janji hubungan ini selalu mulus, karena LDR itu pasti ada ujiannya. Tapi yang bisa aku janjiin: aku akan selalu ada, tetap bertahan, tetap setia, dan tetap memilih kamu, bahkan saat jarak bikin semuanya nggak mudah. Kita mungkin belum sampai pada tahap 'selamanya', tapi aku berharap kamu tahu... aku serius sayang sama kamu, dan aku niat jagain rasa ini sampai waktu mempertemukan kita lagi, bukan cuma lewat layar, tapi di dunia nyata.";
+            const textElement = document.getElementById('text');
+            let index = 0;
+
+            function type() {
+                if (index < text.length) {
+                    textElement.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(type, 50); // Kecepatan pengetikan
+                } else {
+                    const author = document.getElementById('author');
+                    author.innerHTML = "RAFI AKBAR";
+                    author.style.display = 'block';
+                    document.getElementById('finishBtn').style.display = 'block';
+                }
+            }
+
+            textElement.style.display = 'block';
+            type();
+        }
+
+        function openThirdPage() {
+            document.getElementById('secondPage').classList.add('hidden');
+            document.getElementById('thirdPage').classList.remove('hidden');
+            document.body.style.animation = 'rainbowBg 10s linear infinite';
+            createSmileys();
+        }
+
+        function createSmileys() {
+            setInterval(() => {
+                const smiley = document.createElement('div');
+                smiley.innerHTML = '😊';
+                smiley.style.position = 'absolute';
+                smiley.style.left = '0px';
+                smiley.style.top = (Math.random() * 80 + 10) + 'vh';
+                smiley.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                smiley.style.animation = `moveSmiley ${Math.random() * 5 + 3}s linear forwards`;
+                document.getElementById('smileyContainer').appendChild(smiley);
+                
+                setTimeout(() => {
+                    smiley.remove();
+                }, 5000);
+            }, 800);
+        }
+    </script>
+
+</body>
+</html>
